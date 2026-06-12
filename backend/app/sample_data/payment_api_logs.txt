@@ -1,0 +1,6 @@
+ERROR 2026-06-10 10:15:23 Payment API timeout after 30 seconds
+ERROR Database connection pool exhausted
+WARN  Active DB connections: 100/100
+WARN  Slow query detected on transactions table
+ERROR Checkout service failed to complete payment request
+INFO  Suggested action: check DB connection pool and slow queries

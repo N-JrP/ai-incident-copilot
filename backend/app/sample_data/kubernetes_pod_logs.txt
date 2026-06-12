@@ -1,0 +1,5 @@
+ERROR 2026-06-10 11:08:12 Kubernetes pod payment-worker restarted 5 times
+WARN  CrashLoopBackOff detected on payment-worker
+ERROR Container terminated with reason: OOMKilled
+WARN  Memory usage reached 98% of container limit
+INFO  Suggested action: increase memory limits and check batch job memory usage

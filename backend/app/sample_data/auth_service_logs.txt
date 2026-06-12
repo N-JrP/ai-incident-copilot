@@ -1,0 +1,5 @@
+ERROR 2026-06-10 12:22:41 Auth service login failures increased
+WARN  Redis session store timeout detected
+ERROR JWT token validation failed for multiple users
+WARN  Redis latency above 900ms
+INFO  Suggested action: check Redis health, session TTL, and token validation service

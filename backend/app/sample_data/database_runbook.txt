@@ -1,0 +1,24 @@
+Database Connection Pool Runbook
+
+Symptoms:
+- API timeout errors
+- Database connection pool exhausted
+- High active DB connections
+- Slow checkout or payment requests
+
+Root Cause:
+The application may be using all available database connections.
+Slow SQL queries can keep connections open too long.
+
+Resolution Steps:
+1. Check active database connections.
+2. Restart the affected API service if connections are stuck.
+3. Increase database connection pool size temporarily.
+4. Identify slow queries on the transactions table.
+5. Add indexes if slow queries repeat.
+6. Monitor connection usage for 30 minutes.
+
+Prevention:
+- Add alerting for DB connection usage above 80%.
+- Optimize slow SQL queries.
+- Review connection timeout settings.
