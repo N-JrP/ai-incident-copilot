@@ -8,6 +8,8 @@ function App() {
   const [retrievedDocs, setRetrievedDocs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState("");
+  const [evaluationData, setEvaluationData] = useState(null);
+  const [evaluationLoading, setEvaluationLoading] = useState(false);
 
   const analyzeIncident = async () => {
     if (!question?.trim()) return;
@@ -54,6 +56,22 @@ function App() {
     setQuestion("");
     setResponse("");
     setUploadStatus("");
+  };
+
+  const runEvaluation = async () => {
+    setEvaluationLoading(true);
+
+    try {
+      const result = await API.get("/evaluate");
+      setEvaluationData(result.data);
+    } catch {
+      setEvaluationData({
+        status: "error",
+        results: [],
+      });
+    } finally {
+      setEvaluationLoading(false);
+    }
   };
 
   const exportReport = () => {
@@ -291,6 +309,66 @@ function App() {
               )}
             </div>
           </section>
+        </section>
+
+        <section className="panel">
+          <div className="panel-header">
+            <div>
+              <h2>Evaluation Dashboard</h2>
+              <p>
+                Measure AI RCA quality against predefined
+                incident test cases.
+              </p>
+            </div>
+
+            <button
+              onClick={runEvaluation}
+              disabled={evaluationLoading}
+            >
+              {evaluationLoading
+                ? "Running Evaluation..."
+                : "Run Evaluation"}
+            </button>
+          </div>
+
+          {evaluationData?.results?.length > 0 && (
+            <div className="report-cards">
+              {evaluationData.results.map((item, index) => (
+                <div
+                  className="report-card-item"
+                  key={index}
+                >
+                  <span>{item.question}</span>
+
+                  <p>
+                    Score: {item.evaluation.score}
+                  </p>
+
+                  <p>
+                    Matched Keywords:{" "}
+                    {item.evaluation.matched_keywords.join(
+                      ", "
+                    )}
+                  </p>
+
+                  <div
+                    style={{
+                      marginTop: "12px",
+                      fontWeight: "600",
+                      color:
+                        item.evaluation.score >= 0.7
+                          ? "#86efac"
+                          : "#fca5a5",
+                    }}
+                  >
+                    {item.evaluation.score >= 0.7
+                      ? "PASS"
+                      : "FAIL"}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </section>
     </main>
