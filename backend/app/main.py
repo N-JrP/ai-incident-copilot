@@ -57,6 +57,18 @@ def retrieve(request: IncidentRequest):
         "retrieved_documents": results
     }
 
+@app.post("/incident-intelligence")
+def incident_intelligence(request: IncidentRequest):
+    retrieved_documents = retrieve_documents(request.question)
+    context = load_sample_context()
+    report = analyze_incident(context, request.question)
+
+    return {
+        "question": request.question,
+        "retrieved_documents": retrieved_documents,
+        "report": report
+    }
+
 @app.get("/evaluate")
 def evaluate():
     def generate_answer(question: str):
