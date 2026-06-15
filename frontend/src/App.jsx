@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
-import API from "./api";
+import API from "./services/api";
 import "./App.css";
 
 function App() {
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState("");
+  const [retrievedDocs, setRetrievedDocs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState("");
 
@@ -14,8 +15,15 @@ function App() {
     setResponse("");
 
     try {
-      const result = await API.post("/analyze", { question });
+      const result = await API.post(
+        "/incident-intelligence",
+        { question }
+      );
+
       setResponse(result.data.report);
+      setRetrievedDocs(
+        result.data.retrieved_documents || []
+      );
     } catch {
       setResponse(
         "Error: Backend or Ollama is not running.\n\nCheck FastAPI server, Ollama service, and model availability."
@@ -229,6 +237,51 @@ function App() {
                       ))}
                     </ul>
                   </div>
+
+                  <div className="report-card-item">
+                    <span>Retrieved Documents</span>
+
+                    {retrievedDocs.length === 0 ? (
+                      <p>No retrieval data</p>
+                    ) : (
+                      retrievedDocs.map((doc, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            marginTop: "12px",
+                            padding: "12px",
+                            border: "1px solid #2a2f3a",
+                            borderRadius: "8px",
+                          }}
+                        >
+                          <h4 className="retrieved-doc-title">
+                            {doc.source}
+                          </h4>
+
+                          <p
+                            style={{
+                              marginTop: "6px",
+                              fontSize: "14px",
+                              opacity: 0.8,
+                            }}
+                          >
+                            Relevance Score: {doc.score}
+                          </p>
+
+                          <p
+                            style={{
+                              marginTop: "8px",
+                              fontSize: "14px",
+                              lineHeight: "1.5",
+                            }}
+                          >
+                            {doc.preview}
+                          </p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
                 </div>
               ) : (
                 <div className="empty-state">
