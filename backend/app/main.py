@@ -5,8 +5,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.rag_service import load_sample_context
-from app.analysis_service import analyze_incident
+from app.services.rag_service import load_sample_context
+from app.services.analysis_service import analyze_incident
+from app.evaluation.evaluator import run_evaluations
 
 
 app = FastAPI(
@@ -45,6 +46,19 @@ def analyze(request: IncidentRequest):
     return {
         "question": request.question,
         "report": result
+    }
+
+@app.get("/evaluate")
+def evaluate():
+    def generate_answer(question: str):
+        context = load_sample_context()
+        return analyze_incident(context, question)
+
+    results = run_evaluations(generate_answer)
+
+    return {
+        "status": "completed",
+        "results": results
     }
 
 UPLOAD_DIR = "app/uploads"
