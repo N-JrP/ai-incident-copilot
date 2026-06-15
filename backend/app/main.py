@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.services.rag_service import load_sample_context
+from app.services.rag_service import load_sample_context, retrieve_documents
 from app.services.analysis_service import analyze_incident
 from app.evaluation.evaluator import run_evaluations
 
@@ -46,6 +46,15 @@ def analyze(request: IncidentRequest):
     return {
         "question": request.question,
         "report": result
+    }
+
+@app.post("/retrieve")
+def retrieve(request: IncidentRequest):
+    results = retrieve_documents(request.question)
+
+    return {
+        "question": request.question,
+        "retrieved_documents": results
     }
 
 @app.get("/evaluate")
