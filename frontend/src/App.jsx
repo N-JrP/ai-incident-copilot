@@ -114,6 +114,25 @@ function App() {
   };
 }, [response]);
 
+const passedEvaluations =
+  evaluationData?.results?.filter(
+    (item) => item.evaluation.score >= 0.7
+  ).length || 0;
+
+const totalEvaluations =
+  evaluationData?.results?.length || 0;
+
+const averageScore =
+  totalEvaluations > 0
+    ? (
+        evaluationData.results.reduce(
+          (acc, item) =>
+            acc + item.evaluation.score,
+          0
+        ) / totalEvaluations
+      ).toFixed(2)
+    : 0;
+
   return (
     <main className="app">
       <aside className="sidebar">
@@ -332,47 +351,65 @@ function App() {
           </div>
 
           {evaluationData?.results?.length > 0 && (
-            <div className="report-cards">
-              {evaluationData.results.map((item, index) => (
-                <div
-                  className="report-card-item"
-                  key={index}
-                >
-                  <span>{item.question}</span>
-
-                  <p>
-                    Score: {item.evaluation.score}
-                  </p>
-
-                  <p>
-                    Matched Keywords:{" "}
-                    {item.evaluation.matched_keywords.join(
-                      ", "
-                    )}
-                  </p>
-
-                  <div
-                    style={{
-                      marginTop: "12px",
-                      fontWeight: "600",
-                      color:
-                        item.evaluation.score >= 0.7
-                          ? "#86efac"
-                          : "#fca5a5",
-                    }}
-                  >
-                    {item.evaluation.score >= 0.7
-                      ? "PASS"
-                      : "FAIL"}
-                  </div>
+            <>
+              <div className="evaluation-summary">
+                <div className="report-card-item">
+                  <span>Total Tests</span>
+                  <strong>{totalEvaluations}</strong>
                 </div>
-              ))}
-            </div>
+
+                <div className="report-card-item">
+                  <span>Passed Tests</span>
+                  <strong>{passedEvaluations}</strong>
+                </div>
+
+                <div className="report-card-item">
+                  <span>Average Score</span>
+                  <strong>{averageScore}</strong>
+                </div>
+              </div>
+
+              <div className="evaluation-results">
+                {evaluationData.results.map((item, index) => (
+                  <div
+                    className="report-card-item"
+                    key={index}
+                  >
+                    <span>{item.question}</span>
+
+                    <p>
+                      Score: {item.evaluation.score}
+                    </p>
+
+                    <p>
+                      Matched Keywords:{" "}
+                      {item.evaluation.matched_keywords.join(
+                        ", "
+                      )}
+                    </p>
+
+                    <div
+                      style={{
+                        marginTop: "12px",
+                        fontWeight: "600",
+                        color:
+                          item.evaluation.score >= 0.7
+                            ? "#86efac"
+                            : "#fca5a5",
+                      }}
+                    >
+                      {item.evaluation.score >= 0.7
+                        ? "PASS"
+                        : "FAIL"}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </section>
       </section>
     </main>
   );
 }
-
 export default App;

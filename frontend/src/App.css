@@ -364,8 +364,8 @@ button {
 .report-card-item {
   border: 1px solid rgba(148, 163, 184, 0.18);
   background: rgba(15, 23, 42, 0.72);
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 16px;
 }
 
 .report-card-item.root {
@@ -481,4 +481,111 @@ pre {
   font-size: 18px;
   font-weight: 600;
   word-break: break-word;
+}
+
+.evaluation-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.evaluation-results {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.evaluation-summary .report-card-item,
+.evaluation-results .report-card-item {
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.evaluation-summary .report-card-item strong {
+  font-size: 26px;
+}
+
+/* FINAL BALANCED LAYOUT */
+
+.app {
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.sidebar {
+  padding: 20px;
+}
+
+.topbar {
+  padding: 22px 28px;
+}
+
+.topbar h1 {
+  font-size: 38px;
+  margin: 8px 0;
+}
+
+.main-grid {
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.panel {
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.input-panel textarea {
+  min-height: 300px;
+}
+
+.report-box {
+  min-height: auto;
+}
+
+.report-cards {
+  height: auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.75fr;
+  gap: 14px;
+}
+
+.report-card-item {
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.report-card-item p,
+.report-card-item li {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.evaluation-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.evaluation-results {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.evaluation-summary .report-card-item,
+.evaluation-results .report-card-item {
+  padding: 16px;
+  min-height: auto;
+}
+
+.evaluation-summary .report-card-item strong {
+  font-size: 28px;
+}
+
+.retrieved-doc-title {
+  font-size: 16px;
 }
